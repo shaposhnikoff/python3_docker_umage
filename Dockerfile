@@ -8,8 +8,7 @@ RUN apt-get update -y && apt-get -y install gcc  postgresql postgresql-server-de
 RUN groupadd --system --gid 999 nonroot \
  && useradd --system --gid 999 --uid 999 --create-home nonroot
 
-ENV PYTHONPATH="/app:${PYTHONPATH}"
-#ENV PYTHONPATH="/app"
+ENV PYTHONPATH="/app"
 
 # Install the project into `/app`
 WORKDIR /app
@@ -36,7 +35,6 @@ RUN chown -R nonroot:nonroot /app
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
-RUN uv pip install -r requirements.txt
 
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
@@ -48,6 +46,7 @@ ENTRYPOINT []
 ## USER nonroot
 
 # Run the FastAPI application by default
+CMD ["python", "main.py"]
 # Uses `fastapi dev` to enable hot-reloading when the `watch` sync occurs
 # Uses `--host 0.0.0.0` to allow access from outside the container
 # Note in production, you should use `fastapi run` instead
