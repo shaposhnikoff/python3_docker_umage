@@ -30,24 +30,24 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Then, add the rest of the project source code and install it
 # Installing separately from its dependencies allows optimal layer caching
-COPY . /app
-RUN chown -R nonroot:nonroot /app
+#COPY . /app
+#RUN chown -R nonroot:nonroot /app
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-dev
+#RUN --mount=type=cache,target=/root/.cache/uv \
+#    uv sync --locked --no-dev
 
 # Place executables in the environment at the front of the path
-ENV PATH="/app/.venv/bin:$PATH"
+#ENV PATH="/app/.venv/bin:$PATH"
 
 # Reset the entrypoint, don't invoke `uv`
-ENTRYPOINT []
+#ENTRYPOINT []
 
 # Use the non-root user to run our application
 ## USER nonroot
 
 # Run the FastAPI application by default
-CMD ["python", "main.py"]
+#CMD ["python", "main.py"]
 # Uses `fastapi dev` to enable hot-reloading when the `watch` sync occurs
 # Uses `--host 0.0.0.0` to allow access from outside the container
 # Note in production, you should use `fastapi run` instead
-CMD ["uv", "run", "bot.py"]
+#CMD ["uv", "run", "bot.py"]
